@@ -1,9 +1,11 @@
+'use client';
 import "flowbite";
 import './globals.css';
 import { Metadata } from 'next';
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import BackToTopButton from "../../components/BackToTop/BackToTop";
+import { usePathname } from "next/navigation";
 
 
 
@@ -15,6 +17,8 @@ export default function RootLayout({
 }) {
 
 
+  const pathname = usePathname();
+  const hideLayout = pathname.startsWith("/login-register");
   return (
     // <html lang="en" suppressHydrationWarning>
     <html lang="en">
@@ -31,10 +35,11 @@ export default function RootLayout({
 
         {/* <ClientHeader />
         <ClientBanner /> */}
-        <Header />
+        {!hideLayout && <Header />}
         {children}
         <BackToTopButton />
-        <Footer />
+        {!hideLayout && <Footer />}
+
       </body>
     </html>
   );

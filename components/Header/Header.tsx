@@ -18,7 +18,7 @@ export default function Header() {
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            const token = localStorage.getItem('access_token');
+            const token = localStorage.getItem('token');
             if (token) {
                 const decoded = decodeToken(token);
                 setUser(decoded);
@@ -27,7 +27,7 @@ export default function Header() {
     }, []);
 
     const handleLogout = () => {
-        localStorage.removeItem('access_token');
+        localStorage.removeItem('token');
         setUser(null);
         window.location.href = '/';
     };

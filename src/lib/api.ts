@@ -77,14 +77,18 @@ export async function fetchPosts(): Promise<Post[]> {
   ];
 }
 
-// Sủ dụng api swagger của backend cho tất cả bài viết
-// export async function fetchPosts2(): Promise<Post[]> {
-//   const res = await fetch('https://api.example.com/posts');
+//Sủ dụng api swagger của backend cho tất cả bài viết
+
+
+
+
+// export async function fetchPosts(): Promise<Post[]> {
+//   const res = await fetch('http://localhost:8080/api/listing');
 //   if (!res.ok) throw new Error('Failed to fetch posts');
 //   return res.json();
 // }
 
-// Sủ dụng api swagger của backend cho chi tiết bài viết
+// //Sủ dụng api swagger của backend cho chi tiết bài viết
 // export async function fetchPostById(id: number) {
 //   const res = await fetch(`http://localhost:8080/api/listing/${id}`, { cache: "no-store" });
 //   if (!res.ok) throw new Error("Không thể tải chi tiết bài viết");

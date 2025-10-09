@@ -79,25 +79,36 @@ export default function CreatePostForm({ onSuccess }: { onSuccess: () => void })
         setLoading(true);
 
         try {
-            // 👉 Giải mã token từ localStorage
-            const token = localStorage.getItem('access_token');
-            if (!token) throw new Error('Chưa đăng nhập');
 
-            // 👇 Tùy cách mã hóa token, bạn sẽ cần decode JWT (nếu base64 hoặc dùng JWT lib)
-            const payload = JSON.parse(atob(token.split('.')[1]));
-            const { userId, phone } = payload;
+            // Read stored userData (saved as { token, userId })
+            const storedRaw = localStorage.getItem('userData');
+            if (!storedRaw) throw new Error('Chưa đăng nhập');
+            const stored = JSON.parse(storedRaw) as { token?: string; userId?: string };
+            const token = stored.token;
+            const userId = stored.userId;
+            if (!token || !userId) throw new Error('Authentication information missing');
 
-            const postData = {
-                ...form,
-                userId,
-                phone,
-                id: Date.now().toString(),
+            // Build Listing-shaped payload expected by backend
+            const body: any = {
+                seller: { userID: userId },
+                category: { categoryId: form.categoryId },
+                title: form.title,
+                description: form.description,
+                brand: form.brand,
+                price: Number(form.price),
+                // map optional technical fields where present
+                seats: form.seats ?? null,
+                batteryCapacity: form.battery ?? null,
+                mileage: form.range ?? null,
+                vehicleType: form.type ?? null,
+                capacity: form.capacity ?? null,
+                cycleCount: form.cycles ?? null,
             };
 
-            const res = await fetch('/api/posts', {
+            const res = await fetch('http://localhost:8080/api/listing/create', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(postData),
+                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                body: JSON.stringify(body),
             });
 
             if (!res.ok) throw new Error('Đăng bài thất bại');

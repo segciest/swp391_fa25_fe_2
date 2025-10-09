@@ -3,6 +3,7 @@ import "flowbite";
 import './globals.css';
 import { Metadata } from 'next';
 import Header from "../../components/Header/Header";
+import ClientHeader from "../../components/Header/ClientHeader";
 import Footer from "../../components/Footer/Footer";
 import BackToTopButton from "../../components/BackToTop/BackToTop";
 import { usePathname } from "next/navigation";
@@ -35,7 +36,7 @@ export default function RootLayout({
 
         {/* <ClientHeader />
         <ClientBanner /> */}
-        {!hideLayout && <Header />}
+        {!hideLayout && <ClientHeader />}
         {children}
         <BackToTopButton />
         {!hideLayout && <Footer />}

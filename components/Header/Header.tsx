@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { decodeToken, JwtPayload } from '../../utils/decodeToken';
+import { getToken, isTokenExpired, removeToken } from '@/utils/auth';
 
 export default function Header() {
     const [isOpen, setIsOpen] = useState(false);
@@ -18,16 +19,19 @@ export default function Header() {
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            const token = localStorage.getItem('token');
-            if (token) {
-                const decoded = decodeToken(token);
-                setUser(decoded);
+            const token = getToken();
+            if (!token || isTokenExpired(token)) {
+                removeToken();
+                setUser(null);
+                return;
             }
+            const decoded = decodeToken(token);
+            setUser(decoded);
         }
     }, []);
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
+        removeToken();
         setUser(null);
         window.location.href = '/';
     };

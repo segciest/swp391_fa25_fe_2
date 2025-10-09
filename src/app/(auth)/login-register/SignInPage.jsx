@@ -1,12 +1,14 @@
-'use client';
+ 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { saveToken } from '@/utils/auth';
 
 export default function SignInPage() {
   const router = useRouter();
   const [form, setForm] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [remember, setRemember] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -28,9 +30,10 @@ export default function SignInPage() {
 
   if (!res.ok) throw new Error(data.message || 'Login failed');
 
-  // Lưu token và userId vào localStorage dưới key userData (dùng chung với CreatePost)
+  // Save token using remember flag (localStorage vs sessionStorage)
+  saveToken(data.token, remember);
   const stored = { token: data.token, userId: data.userId };
-  localStorage.setItem('token', JSON.stringify(stored));
+  localStorage.setItem('userData', JSON.stringify(stored));
 
       setMessage('Login successful!');
       router.push('/'); // chuyển về trang chủ
@@ -75,6 +78,11 @@ export default function SignInPage() {
           onChange={handleChange}
           required
         />
+
+        <label className="flex items-center gap-2 mt-3 text-sm">
+          <input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} />
+          <span>Remember me</span>
+        </label>
 
         <button type="submit" className="btn" disabled={loading}>
           {loading ? 'Signing in...' : 'Sign In'}

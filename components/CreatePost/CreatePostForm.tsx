@@ -28,6 +28,7 @@ export default function CreatePostForm({ onSuccess }: { onSuccess: () => void })
     });
 
     const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     // 🧠 Handle input change
     const handleChange = (
@@ -88,6 +89,27 @@ export default function CreatePostForm({ onSuccess }: { onSuccess: () => void })
             const userId = stored.userId;
             if (!token || !userId) throw new Error('Authentication information missing');
 
+            // Client-side check: is token expired? (token is JWT)
+            try {
+                const parts = token.split('.');
+                if (parts.length === 3) {
+                    const payload = JSON.parse(atob(parts[1]));
+                    const exp = payload.exp; // exp in seconds
+                    if (exp && Date.now() / 1000 > exp) {
+                        // expired -> clear auth and redirect to sign-in
+                        localStorage.removeItem('userData');
+                        localStorage.removeItem('token');
+                        setErrorMessage('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');
+                        setLoading(false);
+                        setTimeout(() => { window.location.href = '/login-register'; }, 900);
+                        return;
+                    }
+                }
+            } catch (e) {
+                // malformed token - let server handle it, but don't crash here
+                console.warn('Unable to decode token on client', e);
+            }
+
             // Build Listing-shaped payload expected by backend
             const body: any = {
                 seller: { userID: userId },
@@ -110,12 +132,30 @@ export default function CreatePostForm({ onSuccess }: { onSuccess: () => void })
                 headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
                 body: JSON.stringify(body),
             });
-
-            if (!res.ok) throw new Error('Đăng bài thất bại');
+            if (!res.ok) {
+                // try to read response body to show a helpful message
+                let text: string | null = null;
+                try {
+                    // backend might return JSON or plain text
+                    const contentType = res.headers.get('content-type') || '';
+                    if (contentType.includes('application/json')) {
+                        const j = await res.json();
+                        text = JSON.stringify(j);
+                    } else {
+                        text = await res.text();
+                    }
+                } catch (e) {
+                    text = null;
+                }
+                console.error('Create listing failed', { status: res.status, body: text });
+                setErrorMessage(text || `Đăng bài thất bại (status ${res.status})`);
+                throw new Error(text || `Đăng bài thất bại (status ${res.status})`);
+            }
 
             onSuccess();
         } catch (error) {
             console.error('Lỗi khi đăng bài:', error);
+            if (error instanceof Error) setErrorMessage(error.message);
         } finally {
             setLoading(false);
         }
@@ -142,6 +182,7 @@ export default function CreatePostForm({ onSuccess }: { onSuccess: () => void })
             <button type="submit" disabled={loading} className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
                 {loading ? 'Đang đăng...' : 'Đăng bài'}
             </button>
+            {errorMessage && <p className="text-red-500 text-sm mt-2">{errorMessage}</p>}
         </form>
     );
 }

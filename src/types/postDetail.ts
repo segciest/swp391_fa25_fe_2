@@ -41,7 +41,7 @@ export interface PostDetail {
   cycleCount: number;
   batteryLifeRemaining: string;
   price: number;
-  contract: string;
+  contact: string;
   status: string;
   createdAt: string;
   updatedAt: string;

@@ -18,7 +18,7 @@ export default function SignInPage() {
     setMessage('');
 
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await fetch('http://localhost:8080/api/users/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -29,8 +29,8 @@ export default function SignInPage() {
       if (!res.ok) throw new Error(data.message || 'Login failed');
 
       // Lưu token hoặc user vào localStorage
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('userData', JSON.stringify(data.user));
+      localStorage.setItem('token', data.access_token);
+      
 
       setMessage('Login successful!');
       router.push('/'); // chuyển về trang chủ

@@ -21,7 +21,7 @@ export default function Login() {
             // Gọi API đăng nhập (thay URL API bằng backend )
             const res = await fetch("", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "http://localhost:8080/api/users/login" },
                 body: JSON.stringify({ email, password }),
             });
 

@@ -100,4 +100,18 @@ export async function fetchPostById(listingId: string): Promise<PostDetail> {
 }
 
 
+//Lấy thông tin người dùng theo userId
+export async function fetchUserById(userId: string) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/${userId}`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    throw new Error("Không thể tải thông tin người dùng");
+  }
+
+  return res.json();
+}
 

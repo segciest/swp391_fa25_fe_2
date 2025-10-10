@@ -20,7 +20,7 @@ export default function HomePage() {
   // 👇 Kiểm tra access_token từ localStorage
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('userData');
       setIsLoggedIn(!!token); // nếu có token thì true
     }
   }, []);

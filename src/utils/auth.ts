@@ -17,8 +17,8 @@ export function getToken(): string | null {
 
 export function removeToken() {
   try {
-    sessionStorage.removeItem('token');
-    localStorage.removeItem('token');
+    sessionStorage.removeItem('userData');
+    localStorage.removeItem('userData');
   } catch (e) {}
 }
 

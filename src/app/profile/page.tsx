@@ -29,6 +29,7 @@ export default function ProfilePage() {
         const loadUser = async () => {
             try {
                 const data = await fetchUserById(userId);
+                console.log(data);
                 setUser(data);
             } catch (error) {
                 console.error("Lỗi tải thông tin người dùng:", error);

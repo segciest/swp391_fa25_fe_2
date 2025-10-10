@@ -5,10 +5,11 @@ import { useRouter } from 'next/navigation';
 export default function SignUpPage() {
   const router = useRouter();
   const [form, setForm] = useState({
-    name: '',
-    email: '',
-    password: '',
+    userName: '',
+    userEmail: '',
+    userPassword: '',
     phone: '',
+    dob: '',
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -22,7 +23,7 @@ export default function SignUpPage() {
     setMessage('');
 
     try {
-      const res = await fetch('/api/auth/register', {
+      const res = await fetch('http://localhost:8080/api/users/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -55,7 +56,7 @@ export default function SignUpPage() {
 
         <input
           type="text"
-          name="name"
+          name="userName"
           placeholder="Full name"
           value={form.name}
           onChange={handleChange}
@@ -63,7 +64,7 @@ export default function SignUpPage() {
         />
         <input
           type="email"
-          name="email"
+          name="userEmail"
           placeholder="Email"
           value={form.email}
           onChange={handleChange}
@@ -71,7 +72,7 @@ export default function SignUpPage() {
         />
         <input
           type="password"
-          name="password"
+          name="userPassword"
           placeholder="Password"
           value={form.password}
           onChange={handleChange}
@@ -85,6 +86,15 @@ export default function SignUpPage() {
           onChange={handleChange}
           required
         />
+
+          <input
+              type="text"
+              name="dob"
+              placeholder="Date of birth"
+              value={form.dob}
+              onChange={handleChange}
+              required
+          />
 
         <button type="submit" className="btn" disabled={loading}>
           {loading ? 'Signing up...' : 'Sign Up'}

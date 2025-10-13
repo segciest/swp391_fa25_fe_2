@@ -2,6 +2,7 @@
 @import "flowbite";
 @tailwind utilities;
 
+<<<<<<< HEAD
 /* ===== ANIMATIONS ===== */
 @keyframes fadeIn {
   from {
@@ -82,11 +83,16 @@
 
 @keyframes gradient {
   0% {
+=======
+@keyframes gradient-shift {
+  0%, 100% {
+>>>>>>> dde74fe5d0e256f83692a7c6435563b1c001f215
     background-position: 0% 50%;
   }
   50% {
     background-position: 100% 50%;
   }
+<<<<<<< HEAD
   100% {
     background-position: 0% 50%;
   }
@@ -228,6 +234,57 @@ body {
   box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
   transition: all 0.3s ease;
   animation: float 3s ease-in-out infinite;
+=======
+}
+
+@keyframes bounce-glow {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 20px rgba(234, 88, 12, 0.4);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(234, 88, 12, 0.6);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+yBtn {
+  display: none; /* Hidden by default */
+  position: fixed; /* Fixed/sticky position */
+  bottom: 20px; /* Place the button at the bottom of the page */
+  right: 30px; /* Place the button 30px from the right */
+  z-index: 99; /* Make sure it does not overlap */
+  border: none; /* Remove borders */
+  outline: none; /* Remove outline */
+  background-color: red; /* Set a background color */
+  color: white; /* Text color */
+  cursor: pointer; /* Add a mouse pointer on hover */
+  padding: 15px; /* Some padding */
+  border-radius: 10px; /* Rounded corners */
+  font-size: 18px; /* Increase font size */
+>>>>>>> dde74fe5d0e256f83692a7c6435563b1c001f215
 }
 
 #myBtn:hover {

@@ -5,4 +5,9 @@ export interface Post {
   image: string;
   description: string;
   tags: string[];
+  price?: number;
+  condition?: string;
+  location?: string;
+  mileage?: string;
+  year?: number;
 }

@@ -30,10 +30,16 @@ export default function SignInPage() {
 
   if (!res.ok) throw new Error(data.message || 'Login failed');
 
+<<<<<<< HEAD
   // Save token using remember flag (localStorage vs sessionStorage)
   saveToken(data.token, remember);
   const stored = { token: data.token, userId: data.userId };
   localStorage.setItem('userData', JSON.stringify(stored));
+=======
+      // Lưu token hoặc user vào localStorage
+      localStorage.setItem('token', data.access_token);
+      
+>>>>>>> dde74fe5d0e256f83692a7c6435563b1c001f215
 
       setMessage('Login successful!');
       router.push('/'); // chuyển về trang chủ

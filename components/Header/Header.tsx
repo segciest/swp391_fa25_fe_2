@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { decodeToken, JwtPayload } from '../../utils/decodeToken';
 import { getToken, isTokenExpired, removeToken } from '@/utils/auth';
 
@@ -14,7 +15,7 @@ export default function Header() {
     const navLinks = [
         { name: 'TRANG CHỦ', href: '/' },
         { name: 'XE ĐIỆN', href: '/xe-dien' },
-        { name: 'PIN XE', href: '/pin-xe-dien' },
+        { name: 'PIN XE', href: '/pin-xe' },
     ];
 
     useEffect(() => {
@@ -38,61 +39,103 @@ export default function Header() {
 
     return (
         <header>
-            <nav className="fixed w-full z-50 bg-white border-b-4 border-gray-200 px-4 lg:px-6 py-2.5 shadow-md">
+            <nav className="fixed w-full z-50 bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500 px-4 lg:px-6 py-4 shadow-2xl">
                 <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-                    {/* Logo */}
-                    <a href="/" className="flex items-center">
-                        <img src="#" className="mr-3 h-6 sm:h-9" alt="logo" />
-                        <span className="self-center text-base font-semibold text-red-600 lg:text-lg whitespace-nowrap">
+                    {/* Logo with Text */}
+                    <Link href="/" className="flex items-center gap-3 hover:scale-105 transition-transform duration-300">
+                        <img 
+                            src="/image/logo.jpg" 
+                            className="h-12 sm:h-14 w-auto rounded-xl shadow-xl ring-2 ring-white/50 hover:ring-white transition-all" 
+                            alt="EV-Shop Logo" 
+                        />
+                        <span className="text-2xl font-extrabold text-white lg:text-3xl whitespace-nowrap drop-shadow-lg">
                             EV-Shop
                         </span>
-                    </a>
+                    </Link>
 
-                    {/* Nút đăng nhập hoặc user info */}
-                    <div className="flex items-center lg:order-2 relative">
+                    {/* Desktop Navigation */}
+                    <div className="hidden lg:flex items-center gap-6">
+                        {navLinks.map((link) => (
+                            <Link
+                                key={link.name}
+                                href={link.href}
+                                className="text-white font-bold text-base hover:text-yellow-300 transition-colors px-3 py-2 rounded-lg hover:bg-white/10 backdrop-blur-sm"
+                            >
+                                {link.name}
+                            </Link>
+                        ))}
+                    </div>
+
+                    {/* Right Section - Login/User + Mobile Toggle */}
+                    <div className="flex items-center gap-3">
+                        {/* Notification Icon (if logged in) */}
+                        {user && (
+                            <button className="relative p-2 hover:bg-white/20 rounded-full transition-colors">
+                                <span className="text-2xl">🔔</span>
+                                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </button>
+                        )}
+
+                        {/* Đăng tin Button - Always show - Enhanced with stronger shadow */}
+                        <Link
+                            href="/create-post"
+                            className="bg-orange-500 hover:bg-orange-600 text-white font-bold px-6 py-2.5 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 ring-2 ring-white/30"
+                        >
+                            Đăng tin
+                        </Link>
+
+                        {/* Login Button or User Menu */}
                         {!user ? (
-                            <a
+                            <Link
                                 href="/login-register"
-                                className="text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2.5 mr-2 focus:outline-none"
+                                className="bg-blue-500 hover:bg-blue-600 text-white font-bold px-6 py-2.5 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 ring-2 ring-white/30"
                             >
                                 Đăng nhập
-                            </a>
+                            </Link>
                         ) : (
                             <div className="relative">
                                 <button
                                     onClick={handleToggle}
-                                    className="flex items-center gap-2 px-3 py-2 bg-gray-100 rounded-full hover:bg-gray-200"
+                                    className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded-lg transition-colors"
                                 >
-                                    <span className="text-lg">👤</span>
-                                    <span className="text-sm font-medium text-gray-700">
-                                        {user.userName || 'Người dùng'}
+                                    <span className="text-2xl">👤</span>
+                                    <span className="text-sm font-medium text-gray-700 hidden sm:block">
+                                        {user.userName || 'Tài khoản'}
                                     </span>
+                                    <span className="text-gray-400">▼</span>
                                 </button>
 
                                 {isOpen && (
-                                    <div className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow-lg z-50">
-                                        <a
+                                    <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-xl z-50 overflow-hidden">
+                                        <Link
                                             href="/profile"
-                                            className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100"
+                                            className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
                                         >
-                                            <span>👤</span> Hồ sơ
-                                        </a>
+                                            <span className="text-xl">👤</span> Hồ sơ của tôi
+                                        </Link>
+                                        <Link
+                                            href="/my-posts"
+                                            className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                                        >
+                                            <span className="text-xl">📝</span> Tin đã đăng
+                                        </Link>
+                                        <hr className="my-1" />
                                         <button
                                             onClick={handleLogout}
-                                            className="flex items-center gap-2 w-full px-4 py-2 text-sm text-left hover:bg-gray-100"
+                                            className="flex items-center gap-3 w-full px-4 py-3 text-sm font-medium text-left text-red-600 hover:bg-red-50 transition-colors"
                                         >
-                                            <span>🚪</span> Đăng xuất
+                                            <span className="text-xl">🚪</span> Đăng xuất
                                         </button>
                                     </div>
                                 )}
                             </div>
                         )}
 
-                        {/* Toggle menu mobile */}
+                        {/* Mobile Menu Toggle */}
                         <button
                             type="button"
                             onClick={handleToggle}
-                            className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+                            className="lg:hidden p-2 text-white hover:bg-white/20 rounded-lg transition-colors backdrop-blur-sm"
                             aria-expanded={isOpen}
                             aria-controls="mobile-menu"
                         >
@@ -117,21 +160,21 @@ export default function Header() {
                         </button>
                     </div>
 
-                    {/* Menu links */}
+                    {/* Mobile Menu */}
                     <div
                         id="mobile-menu"
-                        className={`${isOpen ? 'block' : 'hidden'} w-full lg:flex lg:w-auto lg:order-1`}
+                        className={`${isOpen ? 'block' : 'hidden'} w-full lg:hidden mt-4 border-t border-white/20 pt-4`}
                     >
-                        <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
+                        <ul className="flex flex-col gap-2">
                             {navLinks.map((link) => (
                                 <li key={link.name}>
-                                    <a
+                                    <Link
                                         href={link.href}
                                         onClick={closeMenu}
-                                        className="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-200"
+                                        className="block py-2.5 px-4 text-white hover:bg-white/20 hover:text-yellow-300 rounded-lg font-bold transition-colors backdrop-blur-sm"
                                     >
                                         {link.name}
-                                    </a>
+                                    </Link>
                                 </li>
                             ))}
                         </ul>

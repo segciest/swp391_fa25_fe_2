@@ -1,0 +1,39 @@
+/* FilterTabs.css */
+
+.filter-tabs {
+  display: flex;
+  justify-content: center; /* Căn giữa các nút */
+  gap: 1rem; /* Tạo khoảng cách 16px giữa các nút */
+  margin-bottom: 2rem; /* Tăng khoảng cách với lưới sản phẩm bên dưới */
+}
+
+/* === STYLE CHUNG CHO MỖI NÚT === */
+.filter-tab {
+  padding: 0.6rem 1.75rem;
+  border-radius: 9999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 1px solid #e5e7eb;
+  background-color: #ffffff;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* === HIỆU ỨNG KHI DI CHUỘT QUA === */
+.filter-tab:hover {
+  border-color: #14b8a6;
+  color: #14b8a6;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* === STYLE CHO NÚT ĐANG ĐƯỢC CHỌN (ACTIVE) === */
+.filter-tab.is-active {
+  background: linear-gradient(90deg, #14b8a6 0%, #06b6d4 100%);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
+  transform: translateY(-2px); /* Thêm để đồng bộ hiệu ứng */
+}

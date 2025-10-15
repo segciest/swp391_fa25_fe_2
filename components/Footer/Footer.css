@@ -1,0 +1,158 @@
+/* ===== FOOTER CONTAINER ===== */
+.footer {
+  background-color: #111827; /* Nền xám đen sang trọng */
+  color: #9ca3af; /* Màu chữ xám nhạt */
+  padding: 4rem 1.5rem;
+  font-family: sans-serif;
+}
+
+.footer-container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* ===== SUBSCRIBE SECTION ===== */
+.footer-subscribe-section {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  margin-bottom: 4rem;
+}
+
+.footer-subscribe-title {
+  font-size: 1.875rem; /* 30px */
+  font-weight: 700;
+  color: #ffffff; /* Chữ trắng nổi bật */
+  margin-bottom: 1.5rem;
+}
+
+.footer-subscribe-form {
+  position: relative;
+}
+
+.footer-subscribe-input {
+  width: 100%;
+  border-radius: 9999px; /* Bo tròn hoàn toàn */
+  background-color: #1f2937; /* Nền input tối hơn */
+  border: 1px solid #374151;
+  color: #ffffff;
+  padding: 1rem 2rem;
+  padding-right: 10rem; /* Dành chỗ cho nút */
+  font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.footer-subscribe-input::placeholder {
+  color: #6b7280;
+}
+
+.footer-subscribe-input:focus {
+  outline: none;
+  border-color: #14b8a6; /* Màu teal khi focus */
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.3);
+}
+
+.footer-subscribe-button {
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  transform: translateY(-50%);
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #14b8a6 0%, #06b6d4 50%); /* Gradient teal */
+  color: white;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.3s;
+}
+
+.footer-subscribe-button:hover {
+  transform: translateY(-50%) scale(1.05);
+  box-shadow: 0 4px 20px rgba(20, 184, 166, 0.25);
+}
+
+/* ===== MAIN CONTENT GRID ===== */
+.footer-main {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr); /* Mặc định 1 cột cho mobile */
+  gap: 2rem;
+  padding-top: 3rem;
+  border-top: 1px solid #374151;
+}
+
+/* Bố cục 4 cột cho màn hình lớn hơn */
+@media (min-width: 768px) {
+  .footer-main {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1024px) {
+  .footer-main {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+
+.footer-column .footer-title {
+  font-size: 1.125rem; /* 18px */
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.footer-column a {
+  color: #9ca3af;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-column a:hover {
+  color: #14b8a6; /* Màu teal khi hover */
+}
+
+/* Cột logo */
+.footer-logo-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.footer-social-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.footer-social-links a svg {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.2s;
+}
+
+.footer-social-links a:hover {
+    color: white;
+}
+.footer-social-links a:hover svg{
+    transform: scale(1.2);
+}
+
+
+/* ===== COPYRIGHT SECTION ===== */
+.footer-copyright {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid #374151;
+  text-align: center;
+  font-size: 0.875rem; /* 14px */
+}

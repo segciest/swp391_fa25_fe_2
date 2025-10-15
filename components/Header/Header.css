@@ -1,0 +1,205 @@
+/* ===== HEADER CONTAINER ===== */
+.header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  background: #0A1915;
+  border-bottom: 1px solid rgba(45, 212, 191, 0.2);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+  height: 72px;
+}
+
+.header-inner {
+  max-width: 1280px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ===== LOGO ===== */
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+/* === THAY ĐỔI: Style cho thẻ <img> logo === */
+.header-logo-image {
+  width: 40px; /* Kích thước logo */
+  height: 40px;
+  object-fit: contain; /* Đảm bảo hình ảnh không bị méo */
+  border-radius: 8px; /* Bo góc nhẹ */
+}
+
+.header-logo-text {
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 1.65rem;
+  letter-spacing: 1px;
+}
+
+/* ===== NAVIGATION (DESKTOP) ===== */
+.header-nav {
+  display: none; /* Ẩn trên mobile */
+}
+@media (min-width: 1024px) {
+  .header-nav {
+    display: flex;
+    gap: 2rem;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+.header-link {
+  color: #E0E0E0;
+  font-weight: 500;
+  text-decoration: none;
+  position: relative;
+  padding: 0.25rem 0;
+  transition: color 0.3s;
+}
+.header-link:hover {
+  color: #2DD4BF;
+}
+
+/* ===== ACTIONS (BUTTONS & USER) ===== */
+.header-actions {
+  display: none; /* Ẩn trên mobile */
+}
+@media (min-width: 1024px) {
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+}
+
+/* Style chung cho các nút */
+.header-button {
+  padding: 0.6rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.3s;
+  display: inline-block;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+}
+.header-button:hover {
+  transform: translateY(-2px);
+}
+
+/* Nút Đăng tin (màu cam) */
+.header-button-post {
+  background: linear-gradient(90deg, #f59e42 0%, #f97316 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(234, 88, 12, 0.15);
+}
+.header-button-post:hover {
+  box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+}
+
+/* Nút Đăng nhập (màu xanh) */
+.header-button-login {
+  background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+}
+.header-button-login:hover {
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+
+/* --- Menu người dùng --- */
+.header-user-menu { position: relative; }
+.header-user-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.header-user-name { color: #FFFFFF; font-weight: 500; }
+.header-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  width: 180px;
+  background: #1A2926;
+  border: 1px solid rgba(45, 212, 191, 0.2);
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  z-index: 60;
+}
+.header-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: none;
+  border: none;
+  color: #E0E0E0;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 0.9rem;
+  text-align: left;
+}
+.header-dropdown-item:hover { background-color: rgba(45, 212, 191, 0.1); }
+
+
+/* ===== MOBILE TOGGLE & MENU ===== */
+.header-mobile-toggle {
+  display: block;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  z-index: 60;
+}
+.header-mobile-toggle .icon { width: 28px; height: 28px; }
+@media (min-width: 1024px) {
+  .header-mobile-toggle { display: none; }
+}
+
+.header-mobile-menu {
+  display: none;
+  position: absolute;
+  top: 72px;
+  left: 0;
+  width: 100%;
+  background: #0A1915;
+  padding: 2rem 1rem;
+  border-top: 1px solid rgba(45, 212, 191, 0.2);
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+.header-mobile-menu.is-open { display: flex; }
+.header-mobile-link {
+  color: #E0E0E0;
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+.header-mobile-actions {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 280px;
+    gap: 1rem;
+}

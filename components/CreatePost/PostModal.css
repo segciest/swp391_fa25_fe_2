@@ -1,0 +1,47 @@
+/* --- PostModal.css --- */
+/* (Dùng cho file PostModal.tsx) */
+
+/* Lớp phủ nền */
+.post-modal-overlay {
+    /* Chúng ta vẫn dùng các lớp tiện ích của Tailwind cho vị trí
+      như 'fixed', 'inset-0', 'z-50' trong file .tsx
+      File CSS này chỉ định nghĩa các kiểu dáng phức tạp hơn.
+    */
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+}
+
+/* Box nội dung */
+.post-modal-content {
+    /* Chúng ta vẫn dùng 'bg-white', 'w-full', 'max-w-2xl' v.v. 
+      trong file .tsx.
+    */
+    transition-property: all;
+    transition-duration: 300ms;
+    /* Đây là đường cong 'ease-out-cubic' cho hiệu ứng mượt mà */
+    transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.post-modal-content-show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.post-modal-content-hide {
+    opacity: 0;
+    transform: scale(0.95);
+}
+
+/* Nút đóng tùy chỉnh (chuyên nghiệp hơn) */
+.post-modal-close-btn {
+    /* Vẫn dùng 'absolute', 'top-4', 'right-4', 'rounded-full', 'p-2' 
+      trong file .tsx
+    */
+    background-color: #f3f4f6; /* Tailwind: bg-gray-100 */
+    color: #9ca3af; /* Tailwind: text-gray-400 */
+    transition: all 200ms;
+}
+.post-modal-close-btn:hover {
+    background-color: #fee2e2; /* Tailwind: hover:bg-red-100 */
+    color: #ef4444; /* Tailwind: hover:text-red-500 */
+}

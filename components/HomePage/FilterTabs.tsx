@@ -1,5 +1,8 @@
 'use client';
 
+// QUAN TRỌNG: Đảm bảo có dòng import này ở đầu file
+import './FilterTabs.css'; 
+
 type FilterType = 'Tất cả' | 'Xe Điện' | 'Pin Xe Điện';
 
 export default function FilterTabs({ selected, onChange }: {
@@ -9,15 +12,12 @@ export default function FilterTabs({ selected, onChange }: {
     const tabs: FilterType[] = ['Tất cả', 'Xe Điện', 'Pin Xe Điện'];
 
     return (
-        <div className="flex gap-2 mb-4">
+        <div className="filter-tabs">
             {tabs.map(tab => (
                 <button
                     key={tab}
                     onClick={() => onChange(tab)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium ${selected === tab
-                            ? 'bg-blue-600 text-white'
-                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                        }`}
+                    className={`filter-tab ${selected === tab ? 'is-active' : ''}`}
                 >
                     {tab}
                 </button>

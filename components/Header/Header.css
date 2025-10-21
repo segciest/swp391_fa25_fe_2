@@ -1,0 +1,356 @@
+/* ===== RESET ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ===== HEADER MAIN ===== */
+.header {
+  width: 100%;
+  background: linear-gradient(90deg, #07540b 0%, #0c0c0c 100%);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  padding: 0;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.header-inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 100%;
+  width: 100%;
+  padding: 1rem 2rem;
+  gap: 2rem;
+}
+
+/* ===== LOGO & BRANDING ===== */
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.header-logo:hover {
+  transform: scale(1.05);
+}
+
+.header-logo-image {
+  height: 3rem;
+  width: 3rem;
+  border-radius: 8px;
+  object-fit: contain;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.25rem;
+}
+
+.header-logo-text {
+  font-size: 1.3rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #0ab81e 0%, #b3cd09 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 1px;
+}
+
+/* ===== NAVIGATION ===== */
+.header-nav {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.header-nav ul {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  align-items: center;
+}
+
+.header-nav li {
+  position: relative;
+}
+
+.header-link {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  color: #e0f2fe;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.header-link::before {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #00d4ff, #0ea5e9);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.header-link:hover {
+  background: rgba(0, 212, 255, 0.15);
+  color: #00d4ff;
+}
+
+.header-link:hover::before {
+  width: 80%;
+}
+
+/* ===== ACTIONS SECTION ===== */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+/* ===== BUTTONS ===== */
+.header-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.5rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.header-button-post {
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
+}
+
+.header-button-post:hover {
+  background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(249, 115, 22, 0.6);
+}
+
+.header-button-login {
+  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.header-button-login:hover {
+  background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.6);
+}
+
+/* ===== USER MENU ===== */
+.header-user-menu {
+  position: relative;
+}
+
+.header-user-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 1rem;
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+  border: 2px solid #10b981;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 700;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+.header-user-toggle:hover {
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  transform: translateY(-2px);
+}
+
+.header-user-avatar {
+  font-size: 1.2rem;
+}
+
+.header-user-name {
+  color: #047857;
+  font-weight: 700;
+}
+
+/* ===== DROPDOWN MENU ===== */
+.header-dropdown {
+  position: absolute;
+  top: 120%;
+  right: 0;
+  width: 220px;
+  background: linear-gradient(135deg, #fff 0%, #f0fdf4 100%);
+  border: 2px solid #10b981;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+  overflow: hidden;
+  animation: slideDown 0.3s ease;
+  margin-top: 0.5rem;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.header-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.85rem 1rem;
+  color: #047857;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: left;
+  background: none;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid #d1fae5;
+  font-family: inherit;
+}
+
+.header-dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.header-dropdown-item:hover {
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+  color: #10b981;
+  padding-left: 1.25rem;
+}
+
+.header-dropdown-item span:first-child {
+  font-size: 1.1rem;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 1024px) {
+  .header-inner {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .header-logo-text {
+    font-size: 1.1rem;
+  }
+
+  .header-logo-image {
+    height: 2.5rem;
+    width: 2.5rem;
+  }
+
+  .header-nav ul {
+    gap: 0.25rem;
+  }
+
+  .header-link {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .header-button {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-inner {
+    padding: 0.75rem 1rem;
+    gap: 0.5rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-logo {
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .header-logo-text {
+    font-size: 0.95rem;
+  }
+
+  .header-logo-image {
+    height: 2rem;
+    width: 2rem;
+  }
+
+  .header-nav {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .header-nav ul {
+    flex-direction: row;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+  }
+
+  .header-link {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .header-actions {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .header-button {
+    flex: 1;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.75rem;
+    min-width: 100px;
+  }
+
+  .header-user-toggle {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .header-user-name {
+    display: none;
+  }
+
+  .header-dropdown {
+    right: auto;
+    left: 0;
+  }
+}

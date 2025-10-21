@@ -21,3 +21,81 @@ yBtn {
 #myBtn:hover {
   background-color: #555; /* Add a dark-grey background on hover */
 }
+
+/* === Nút Đăng Bài Viết - Màu Đỏ === */
+.add-post-button-new {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1.75rem;
+  background: linear-gradient(135deg, #3209ea 0%, #2804f4 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.add-post-button-new:hover {
+  background: linear-gradient(135deg, #811fea 0%, #5a08f2 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.5);
+}
+
+.add-post-button-new:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.add-post-button-new:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.add-post-icon {
+  font-size: 1.2rem;
+  display: inline-block;
+}
+
+/* === Layout cho nút và filter tabs cùng hàng === */
+.featured-posts-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.featured-posts-title {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.featured-posts-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2rem;
+}
+
+@media (max-width: 1024px) {
+  .featured-posts-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .featured-posts-controls {
+    justify-content: center;
+  }
+}

@@ -1,0 +1,178 @@
+/* ===== CÀI ĐẶT CƠ BẢN ===== */
+.footer {
+  background-color: #121212; /* Nền đen (màu đen hơi nhạt một chút) */
+  color: #a0a0a0;           /* Màu chữ xám cơ bản */
+  padding: 4rem 1.5rem 2rem; /* Khoảng đệm (trên-dưới 4rem, trái-phải 1.5rem, dưới cùng 2rem) */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ===== CONTAINER CHÍNH ===== */
+/* Chúng ta sẽ dùng Flexbox để sắp xếp lại thứ tự các phần tử */
+.footer-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column; /* Sắp xếp các phần tử con theo chiều dọc */
+}
+
+/* ===== PHẦN NỘI DUNG CHÍNH (Các cột) ===== */
+.footer-main {
+  display: flex;
+  flex-wrap: wrap; /* Cho phép các cột xuống hàng trên màn hình nhỏ */
+  justify-content: space-between;
+  gap: 2rem; /* Khoảng cách giữa các cột */
+  order: 1; /* Sắp xếp phần này lên đầu tiên */
+}
+
+.footer-column {
+  flex: 1; /* Các cột tự động chia đều không gian */
+  min-width: 200px; /* Chiều rộng tối thiểu trước khi xuống hàng */
+}
+
+/* ===== STYLES CHO CỘT 1 (LOGO VÀ MÔ TẢ) ===== */
+.footer-logo-text {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #ffffff; /* Màu xám sáng nhất (trắng) cho logo */
+  margin: 0 0 1rem 0; /* Bỏ margin trên, thêm margin dưới */
+}
+
+.footer-column p {
+  line-height: 1.6; /* Giãn dòng cho dễ đọc */
+}
+
+/* ===== STYLES CHO CÁC CỘT CÒN LẠI (DANH MỤC, HỖ TRỢ, LIÊN HỆ) ===== */
+.footer-title {
+  font-size: 1.1rem;
+  font-weight: 600; /* In đậm */
+  color: #e0e0e0;   /* Màu xám sáng cho tiêu đề */
+  margin-bottom: 1.5rem;
+}
+
+.footer-column ul {
+  list-style: none; /* Bỏ dấu chấm đầu dòng */
+  padding: 0;
+  margin: 0;
+}
+
+.footer-column li {
+  margin-bottom: 0.75rem; /* Khoảng cách giữa các mục */
+}
+
+/* Kiểu cho các mục không phải link (như Email, Hotline, Địa chỉ) */
+.footer-column li:not(:has(a)) {
+  font-size: 0.95rem;
+}
+
+.footer-column a {
+  color: #a0a0a0; /* Màu xám cơ bản */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-column a:hover {
+  color: #ffffff; /* Chuyển sang màu trắng khi hover */
+  text-decoration: underline;
+}
+
+/* ===== PHẦN ĐĂNG KÝ EMAIL (ĐƯỢC DI CHUYỂN XUỐNG DƯỚI) ===== */
+.footer-subscribe-section {
+  order: 2; /* Sắp xếp phần này ở vị trí thứ 2 (sau footer-main) */
+  text-align: center;
+  margin-top: 3rem; /* Khoảng cách với phần nội dung bên trên */
+  padding-top: 2rem; /* Khoảng cách bên trong */
+  border-top: 1px solid #333; /* Đường kẻ phân cách */
+}
+
+.footer-subscribe-title {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 600; /* In đậm */
+  color: #e0e0e0;   /* Màu xám sáng */
+  margin-bottom: 1.5rem;
+}
+
+.footer-subscribe-form {
+  display: flex;
+  justify-content: center;
+  max-width: 500px;
+  margin: 0 auto;
+  gap: 0.5rem; /* Khoảng cách giữa input và button */
+}
+
+.footer-subscribe-input {
+  flex: 1; /* Input chiếm phần lớn không gian */
+  padding: 0.75rem 1rem;
+  border: 1px solid #444;
+  background-color: #222;
+  color: #e0e0e0; /* Màu chữ khi gõ */
+  border-radius: 4px;
+  font-size: 1rem;
+  outline: none; /* Tắt viền xanh khi focus */
+}
+
+.footer-subscribe-input::placeholder {
+  color: #777; /* Màu chữ placeholder */
+}
+
+.footer-subscribe-button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #e0e0e0; /* Nút màu xám sáng */
+  color: #121212;           /* Chữ màu đen */
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.footer-subscribe-button:hover {
+  background-color: #ffffff; /* Sáng hơn khi hover */
+}
+
+/* Ẩn label "Email" (vì đã có placeholder) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ===== PHẦN BẢN QUYỀN (CUỐI CÙNG) ===== */
+.footer-copyright {
+  order: 3; /* Sắp xếp ở vị trí cuối cùng */
+  text-align: center;
+  font-size: 0.9rem;
+  color: #777; /* Màu xám mờ */
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #333; /* Đường kẻ phân cách */
+}
+
+
+/* ===== ĐIỀU CHỈNH CHO MÀN HÌNH NHỎ (RESPONSIVE) ===== */
+@media (max-width: 768px) {
+  .footer-main {
+    flex-direction: column; /* Các cột xếp chồng lên nhau */
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-subscribe-form {
+    flex-direction: column; /* Input và button xếp chồng lên nhau */
+    gap: 1rem;
+  }
+
+  .footer {
+    padding: 3rem 1rem 1.5rem;
+  }
+}

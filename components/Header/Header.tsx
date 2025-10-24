@@ -6,12 +6,13 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { decodeToken, JwtPayload } from '../../utils/decodeToken';
 import { getToken, isTokenExpired, removeToken } from '@/utils/auth';
-import PostModal from '../CreatePost/PostModal'; // ✅ Thêm import
+import PostModal from '../CreatePost/PostModal';
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<JwtPayload | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false); // ✅ State cho modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleToggle = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
@@ -24,21 +25,46 @@ export default function Header() {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const token = getToken();
-      if (!token || isTokenExpired(token)) {
+      try {
+        const token = getToken();
+        if (!token || isTokenExpired(token)) {
+          removeToken();
+          setUser(null);
+        } else {
+          const decoded = decodeToken(token);
+          console.log('Decoded user:', decoded); // Debug
+          setUser(decoded);
+        }
+      } catch (error) {
+        console.error('Error decoding token:', error);
         removeToken();
         setUser(null);
-        return;
+      } finally {
+        setIsLoading(false);
       }
-      const decoded = decodeToken(token);
-      setUser(decoded);
     }
   }, []);
 
   const handleLogout = () => {
     removeToken();
+    localStorage.removeItem('userData'); // Xóa userData
+    sessionStorage.removeItem('userData'); // Nếu dùng sessionStorage
     setUser(null);
     window.location.href = '/';
+  };
+
+  // Lấy tên hiển thị - ưu tiên: fullName > userName > email > "Người dùng"
+  const getDisplayName = () => {
+    if (!user) return 'Người dùng';
+    console.log('Available fields:', {
+      fullName: user.fullName,
+      userName: user.userName,
+      email: user.email,
+      sub: user.sub,
+      iat: user.iat,
+    });
+    console.log('All user keys:', Object.keys(user));
+    return user.fullName || user.userName || user.email || user.sub || 'Người dùng';
   };
 
   return (
@@ -72,7 +98,6 @@ export default function Header() {
 
           {/* Actions */}
           <div className="header-actions">
-            {/* ✅ SỬA: Thay href bằng onClick để mở modal */}
             <button 
               onClick={() => setIsModalOpen(true)}
               className="header-button header-button-post"
@@ -89,7 +114,7 @@ export default function Header() {
                 <button onClick={handleToggle} className="header-user-toggle">
                   <span className="header-user-avatar">👤</span>
                   <span className="header-user-name">
-                    {user.userName || 'Người dùng'}
+                    {getDisplayName()}
                   </span>
                 </button>
                 {isOpen && (
@@ -108,7 +133,6 @@ export default function Header() {
         </div>
       </header>
 
-      {/* ✅ Thêm PostModal component */}
       <PostModal 
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

@@ -155,12 +155,14 @@ function FeaturedPostsSection({ onOpenModal }: { onOpenModal: () => void }) {
         {error && <p className="text-center text-red-500 py-8">{error}</p>}
         
         {!loading && !error && filteredPosts.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredPosts.map(post => (
-              <PostCard key={post.id} post={post} />
-            ))}
-          </div>
-        )}
+                  <div className="posts-container">
+                  <div className="post-grid">
+                        {filteredPosts.map(post => (
+                                <PostCard key={post.id} post={post} />
+                                           ))}
+                      </div>
+                    </div>
+                  )}
 
         {!loading && !error && filteredPosts.length === 0 && (
           <p className="text-center text-gray-500 py-8">Không có tin đăng nào phù hợp.</p>

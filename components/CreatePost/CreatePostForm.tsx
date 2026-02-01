@@ -1,6 +1,6 @@
 'use client';
-
-import { useState, useEffect } from 'react';
+import './CreatePostForm.css';
+import { useState } from 'react';
 
 export default function CreatePostForm({ onSuccess }: { onSuccess: () => void }) {
     interface FormData {
@@ -9,7 +9,6 @@ export default function CreatePostForm({ onSuccess }: { onSuccess: () => void })
         brand: string;
         price: number | string;
         categoryId: number;
-        // thêm các field kỹ thuật
         seats?: number;
         battery?: string;
         range?: string;
@@ -19,6 +18,7 @@ export default function CreatePostForm({ onSuccess }: { onSuccess: () => void })
         type?: string;
         cycles?: number;
     }
+
     const [form, setForm] = useState<FormData>({
         title: '',
         description: '',
@@ -27,10 +27,12 @@ export default function CreatePostForm({ onSuccess }: { onSuccess: () => void })
         categoryId: 1,
     });
 
+    const [images, setImages] = useState<File[]>([]);
+    const [previewUrls, setPreviewUrls] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-    // 🧠 Handle input change
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
     ) => {
@@ -43,31 +45,65 @@ export default function CreatePostForm({ onSuccess }: { onSuccess: () => void })
         }));
     };
 
-    // 🛠️ Render các trường riêng theo category
+    const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = Array.from(e.target.files || []);
+        const maxFiles = 5;
+        
+        if (images.length + files.length > maxFiles) {
+            setErrorMessage(`Tối đa ${maxFiles} ảnh`);
+            return;
+        }
+
+        const newImages = [...images, ...files];
+        setImages(newImages);
+
+        const newPreviewUrls = files.map(file => URL.createObjectURL(file));
+        setPreviewUrls([...previewUrls, ...newPreviewUrls]);
+        setErrorMessage(null);
+    };
+
+    const removeImage = (index: number) => {
+        setImages(images.filter((_, i) => i !== index));
+        URL.revokeObjectURL(previewUrls[index]);
+        setPreviewUrls(previewUrls.filter((_, i) => i !== index));
+    };
+
+    const categories = [
+        { id: 1, name: 'Xe hơi điện', icon: '🚗' },
+        { id: 2, name: 'Xe máy điện', icon: '🏍️' },
+        { id: 3, name: 'Pin xe điện', icon: '🔋' },
+    ];
+
     const renderCategoryFields = () => {
         switch (form.categoryId) {
-            case 1: // Xe hơi điện
+            case 1:
                 return (
                     <>
-                        <input name="seats" value={form.seats || ''} onChange={handleChange} placeholder="Số chỗ" className="w-full p-2 border rounded" />
-                        <input name="battery" value={form.battery || ''} onChange={handleChange} placeholder="Dung lượng pin" className="w-full p-2 border rounded" />
-                        <input name="range" value={form.range || ''} onChange={handleChange} placeholder="Tầm hoạt động (km)" className="w-full p-2 border rounded" />
+                        <div className="form-grid-2">
+                            <input name="seats" value={form.seats || ''} onChange={handleChange} placeholder="Số chỗ" type="number" className="form-input" />
+                            <input name="battery" value={form.battery || ''} onChange={handleChange} placeholder="Dung lượng pin" className="form-input" />
+                        </div>
+                        <input name="range" value={form.range || ''} onChange={handleChange} placeholder="Tầm hoạt động (km)" className="form-input" />
                     </>
                 );
-            case 2: // Xe máy điện
+            case 2:
                 return (
                     <>
-                        <input name="speed" value={form.speed || ''} onChange={handleChange} placeholder="Tốc độ tối đa (km/h)" className="w-full p-2 border rounded" />
-                        <input name="weight" value={form.weight || ''} onChange={handleChange} placeholder="Trọng lượng (kg)" className="w-full p-2 border rounded" />
-                        <input name="battery" value={form.battery || ''} onChange={handleChange} placeholder="Loại pin" className="w-full p-2 border rounded" />
+                        <div className="form-grid-2">
+                            <input name="speed" value={form.speed || ''} onChange={handleChange} placeholder="Tốc độ tối đa (km/h)" className="form-input" />
+                            <input name="weight" value={form.weight || ''} onChange={handleChange} placeholder="Trọng lượng (kg)" className="form-input" />
+                        </div>
+                        <input name="battery" value={form.battery || ''} onChange={handleChange} placeholder="Loại pin" className="form-input" />
                     </>
                 );
-            case 3: // Pin xe điện
+            case 3:
                 return (
                     <>
-                        <input name="capacity" value={form.capacity || ''} onChange={handleChange} placeholder="Dung lượng (kWh)" className="w-full p-2 border rounded" />
-                        <input name="type" value={form.type || ''} onChange={handleChange} placeholder="Loại pin" className="w-full p-2 border rounded" />
-                        <input name="cycles" value={form.cycles || ''} onChange={handleChange} placeholder="Số lần sạc" className="w-full p-2 border rounded" />
+                        <div className="form-grid-2">
+                            <input name="capacity" value={form.capacity || ''} onChange={handleChange} placeholder="Dung lượng (kWh)" className="form-input" />
+                            <input name="cycles" value={form.cycles || ''} onChange={handleChange} placeholder="Số lần sạc" type="number" className="form-input" />
+                        </div>
+                        <input name="type" value={form.type || ''} onChange={handleChange} placeholder="Loại pin (LiFePO4, Li-ion...)" className="form-input" />
                     </>
                 );
             default:
@@ -78,25 +114,22 @@ export default function CreatePostForm({ onSuccess }: { onSuccess: () => void })
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
+        setErrorMessage(null);
 
         try {
-
-            // Read stored userData (saved as { token, userId })
             const storedRaw = localStorage.getItem('userData');
             if (!storedRaw) throw new Error('Chưa đăng nhập');
             const stored = JSON.parse(storedRaw) as { token?: string; userId?: string };
             const token = stored.token;
             const userId = stored.userId;
-            if (!token || !userId) throw new Error('Authentication information missing');
+            if (!token || !userId) throw new Error('Thông tin xác thực không hợp lệ');
 
-            // Client-side check: is token expired? (token is JWT)
             try {
                 const parts = token.split('.');
                 if (parts.length === 3) {
                     const payload = JSON.parse(atob(parts[1]));
-                    const exp = payload.exp; // exp in seconds
+                    const exp = payload.exp;
                     if (exp && Date.now() / 1000 > exp) {
-                        // expired -> clear auth and redirect to sign-in
                         localStorage.removeItem('userData');
                         localStorage.removeItem('token');
                         setErrorMessage('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');
@@ -106,19 +139,16 @@ export default function CreatePostForm({ onSuccess }: { onSuccess: () => void })
                     }
                 }
             } catch (e) {
-                // malformed token - let server handle it, but don't crash here
                 console.warn('Unable to decode token on client', e);
             }
 
-            // Build Listing-shaped payload expected by backend
-            const body: any = {
+            const body = {
                 seller: { userID: userId },
                 category: { categoryId: form.categoryId },
                 title: form.title,
                 description: form.description,
                 brand: form.brand,
                 price: Number(form.price),
-                // map optional technical fields where present
                 seats: form.seats ?? null,
                 batteryCapacity: form.battery ?? null,
                 mileage: form.range ?? null,
@@ -132,11 +162,10 @@ export default function CreatePostForm({ onSuccess }: { onSuccess: () => void })
                 headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
                 body: JSON.stringify(body),
             });
+
             if (!res.ok) {
-                // try to read response body to show a helpful message
                 let text: string | null = null;
                 try {
-                    // backend might return JSON or plain text
                     const contentType = res.headers.get('content-type') || '';
                     if (contentType.includes('application/json')) {
                         const j = await res.json();
@@ -147,14 +176,12 @@ export default function CreatePostForm({ onSuccess }: { onSuccess: () => void })
                 } catch (e) {
                     text = null;
                 }
-                console.error('Create listing failed', { status: res.status, body: text });
-                setErrorMessage(text || `Đăng bài thất bại (status ${res.status})`);
                 throw new Error(text || `Đăng bài thất bại (status ${res.status})`);
             }
 
-            onSuccess();
+            setSuccessMessage('✅ Đăng bài thành công!');
+            setTimeout(() => onSuccess(), 1500);
         } catch (error) {
-            console.error('Lỗi khi đăng bài:', error);
             if (error instanceof Error) setErrorMessage(error.message);
         } finally {
             setLoading(false);
@@ -162,27 +189,154 @@ export default function CreatePostForm({ onSuccess }: { onSuccess: () => void })
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4">
-            <h2 className="text-xl font-semibold">Tạo Bài Viết Mới</h2>
+        <form onSubmit={handleSubmit} className="create-post-form">
+            {/* Header */}
+            <div className="form-header">
+                <h2>Tạo Bài Viết Mới</h2>
+                <p>Chia sẻ sản phẩm của bạn với cộng đồng</p>
+            </div>
 
-            <input name="title" value={form.title} onChange={handleChange} placeholder="Tiêu đề" className="w-full p-2 border rounded" required />
-            <textarea name="description" value={form.description} onChange={handleChange} placeholder="Mô tả" className="w-full p-2 border rounded" required />
-            <input name="brand" value={form.brand} onChange={handleChange} placeholder="Thương hiệu" className="w-full p-2 border rounded" required />
-            <input name="price" value={form.price} onChange={handleChange} placeholder="Giá (VND)" className="w-full p-2 border rounded" type="number" required />
+            {/* Thông tin cơ bản */}
+            <div className="form-section">
+                <h3 className="section-title">📋 Thông Tin Cơ Bản</h3>
+                <input 
+                    name="title" 
+                    value={form.title} 
+                    onChange={handleChange} 
+                    placeholder="Tiêu đề (vd: Honda SH Mode 125cc zin chất)" 
+                    className="form-input" 
+                    required 
+                />
+                <textarea 
+                    name="description" 
+                    value={form.description} 
+                    onChange={handleChange} 
+                    placeholder="Mô tả chi tiết về sản phẩm..." 
+                    className="form-input form-textarea" 
+                    rows={4}
+                    required 
+                />
+            </div>
 
-            <select name="categoryId" value={form.categoryId} onChange={handleChange} className="w-full p-2 border rounded">
-                <option value={1}>Xe hơi điện</option>
-                <option value={2}>Xe máy điện</option>
-                <option value={3}>Pin xe điện</option>
-            </select>
+            {/* Thông tin sản phẩm */}
+            <div className="form-section">
+                <h3 className="section-title">🏷️ Thông Tin Sản Phẩm</h3>
+                <div className="form-grid-2">
+                    <input 
+                        name="brand" 
+                        value={form.brand} 
+                        onChange={handleChange} 
+                        placeholder="Thương hiệu (vd: Honda, Yamaha)" 
+                        className="form-input" 
+                        required 
+                    />
+                    <input 
+                        name="price" 
+                        value={form.price} 
+                        onChange={handleChange} 
+                        placeholder="Giá (VND)" 
+                        className="form-input" 
+                        type="number" 
+                        required 
+                    />
+                </div>
+            </div>
 
-            {/* 👇 Trường kỹ thuật riêng */}
-            {renderCategoryFields()}
+            {/* Upload ảnh */}
+            <div className="form-section">
+                <h3 className="section-title">Hình Ảnh Sản Phẩm</h3>
+                <label className="image-upload-label">
+                    <input 
+                        type="file" 
+                        multiple 
+                        accept="image/*" 
+                        onChange={handleImageSelect}
+                        hidden
+                    />
+                    <span className="image-upload-placeholder">
+                        📸 Chọn hình ảnh (tối đa 5 ảnh)
+                    </span>
+                </label>
+                
+                {previewUrls.length > 0 && (
+                    <div className="image-preview-grid">
+                        {previewUrls.map((url, index) => (
+                            <div key={index} className="image-preview-item">
+                                <img src={url} alt={`Preview ${index}`} />
+                                <button 
+                                    type="button"
+                                    onClick={() => removeImage(index)}
+                                    className="image-remove-btn"
+                                >
+                                    ✕
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                )}
+                
+                {previewUrls.length === 0 && (
+                    <p className="image-no-select">Chưa có ảnh nào được chọn</p>
+                )}
+            </div>
 
-            <button type="submit" disabled={loading} className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                {loading ? 'Đang đăng...' : 'Đăng bài'}
+            {/* Chọn danh mục */}
+            <div className="form-section">
+                <h3 className="section-title">📦 Danh Mục</h3>
+                <div className="category-selector">
+                    {categories.map(cat => (
+                        <label key={cat.id} className={`category-option ${form.categoryId === cat.id ? 'active' : ''}`}>
+                            <input 
+                                type="radio" 
+                                name="categoryId" 
+                                value={cat.id} 
+                                checked={form.categoryId === cat.id}
+                                onChange={handleChange} 
+                                hidden 
+                            />
+                            <span className="category-icon">{cat.icon}</span>
+                            <span className="category-name">{cat.name}</span>
+                        </label>
+                    ))}
+                </div>
+            </div>
+
+            {/* Thông tin kỹ thuật */}
+            {form.categoryId && (
+                <div className="form-section">
+                    <h3 className="section-title">⚙️ Thông Tin Kỹ Thuật</h3>
+                    {renderCategoryFields()}
+                </div>
+            )}
+
+            {/* Thông báo */}
+            {errorMessage && (
+                <div className="alert alert-error">
+                    <span>❌</span>
+                    {errorMessage}
+                </div>
+            )}
+            {successMessage && (
+                <div className="alert alert-success">
+                    {successMessage}
+                </div>
+            )}
+
+            {/* Button */}
+            <button 
+                type="submit" 
+                disabled={loading} 
+                className="form-button"
+            >
+                {loading ? (
+                    <>
+                        <span className="spinner"></span>
+                        Đang đăng...
+                    </>
+                ) : (
+                    '✨ Đăng Bài'
+                )}
             </button>
-            {errorMessage && <p className="text-red-500 text-sm mt-2">{errorMessage}</p>}
         </form>
     );
 }
